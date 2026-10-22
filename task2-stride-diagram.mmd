@@ -1,0 +1,34 @@
+flowchart TB
+    U["Users: Employee / Manager / Admin"]
+
+    subgraph INTERNET["Trust Boundary 1: Public Internet"]
+        W["Web Application"]
+    end
+
+    subgraph COMPANY["Trust Boundary 2: Company Network"]
+        API["API Gateway and Authorization"]
+        PAY["Payroll Engine"]
+        AI["AI Layer"]
+        DASH["Role-Based Dashboards"]
+    end
+
+    subgraph DATA["Trust Boundary 3: Restricted Data Zone"]
+        DB[("Employee Database")]
+        LEDGER[("Payroll Ledger")]
+        AUDIT[("Audit Logs")]
+    end
+
+    U -->|"F1: HTTPS login and requests"| W
+    W -->|"F2: Authenticated API requests"| API
+    API -->|"F3: Employee queries"| DB
+    API -->|"F4: Approved payroll requests"| PAY
+    PAY -->|"F5: Read employee and salary data"| DB
+    PAY -->|"F6: Record transactions"| LEDGER
+    API -->|"F7: Authorized AI requests"| AI
+    AI -->|"F8: Approved data queries"| DB
+    AI -->|"F9: Insights and results"| DASH
+    API -->|"F10: Authorized dashboard data"| DASH
+    DASH -->|"F11: Read permitted payroll summaries"| LEDGER
+    API -->|"F12: Security events"| AUDIT
+    PAY -->|"F13: Payroll audit events"| AUDIT
+    AI -->|"F14: AI access and activity events"| AUDIT
